@@ -161,7 +161,7 @@ static NSString *const SETTING_METRIC = @"metric";
     // Dispose of any resources that can be recreated.
 }
 
--(NSString *)datesonCell : (NSInteger) day{
+/*-(NSString *)datesonCell : (NSInteger) day{
    
     NSDate*currentDate = [NSDate date];
     currentDate = [currentDate dateByAddingTimeInterval: 60*60*24* (int)day];
@@ -170,7 +170,7 @@ static NSString *const SETTING_METRIC = @"metric";
     NSString*dateString = [formattedDate stringFromDate:currentDate];
     
     return dateString;
-}
+}*/
 
 
 
@@ -197,7 +197,7 @@ static NSString *const SETTING_METRIC = @"metric";
     
     //list  has 7 dictionaries. assign first dictionary and retrieve needed datas from it.
     NSDictionary *firstdictionary = self.temperatureInfoList[indexPath.row];
-    
+    //as per the settings bundle
     if ([self.unitselected isEqualToString:@"0"]) {
         cell.minTemperature.text = [NSString stringWithFormat:@"%@ \u00B0F ", [[firstdictionary objectForKey:@"temp"]
                                                                        objectForKey:@"min"]];
@@ -222,16 +222,24 @@ static NSString *const SETTING_METRIC = @"metric";
     
     cell.weatherImage.image  = [UIImage imageWithData:imageData];
     // taking date from the api
+    
+    if (indexPath.row == 0) {
+        cell.dayName.text = @"Today";
+    }
+    
+    else {
+    
     NSNumber *interval = (NSNumber*) [firstdictionary objectForKey:@"dt"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: (float)interval.intValue];
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy-MMM-dd"];
+    [formatter setDateFormat:@"MMM-dd-yyyy"];
     NSString *dateString = [formatter stringFromDate:date];
-    cell.dayName.text = dateString;
+    
+        cell.dayName.text = dateString;
     
     //cell.backgroundColor = [UIColor  ];
-    
+    }
     
     return cell;
 }
